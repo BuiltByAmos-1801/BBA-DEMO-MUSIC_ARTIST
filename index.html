@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio website for music, videos, events, merch, beats, booking, and contact.">
+  <title>Artist Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23050510'/%3E%3Cpath d='M40 9v30.8A9 9 0 1 1 34 31V16l18-4v8l-12 2.7z' fill='%2300ffcc'/%3E%3Cpath d='M40 9v30.8A9 9 0 1 1 34 31V16l18-4v8l-12 2.7z' fill='none' stroke='%237f00ff' stroke-width='2'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f8f9fa;
+      --purple: #007bff;
+      --green: #28a745;
+      --white: #000000;
+      --muted: rgba(0, 0, 0, 0.72);
+      --glass: rgba(0, 0, 0, 0.05);
+      --glass-strong: rgba(0, 0, 0, 0.09);
+      --border: rgba(0, 0, 0, 0.13);
+      --shadow-purple: 0 0 18px rgba(0, 123, 255, 0.58), 0 0 44px rgba(0, 123, 255, 0.22);
+      --shadow-green: 0 0 18px rgba(40, 167, 69, 0.52), 0 0 38px rgba(40, 167, 69, 0.18);
+      --radius: 8px;
+      --nav-height: 76px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-height) + 18px);
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--white);
+      font-family: "Inter", system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: none;
+    }
+
+    ::selection {
+      background: var(--green);
+      color: var(--bg);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-soft);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--purple);
+      border-radius: 99px;
+    }
+
+    .cursor-dot,
+    .cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10000;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      box-shadow: var(--shadow-green);
+    }
+
+    .cursor-ring {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(127, 0, 255, 0.85);
+      box-shadow: var(--shadow-purple);
+      transition: width 160ms ease, height 160ms ease, border-color 160ms ease;
+    }
+
+    .cursor-ring.is-hovering {
+      width: 58px;
+      height: 58px;
+      border-color: var(--green);
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      background: #050510;
+      transition: opacity 650ms ease, visibility 650ms ease;
+    }
+
+    .loader.loaded {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader__name {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(2.1rem, 8vw, 7rem);
+      letter-spacing: 0;
+      color: var(--white);
+      text-shadow: var(--shadow-purple), var(--shadow-green);
+      animation: revealGlow 1.5s ease both, flicker 2.4s linear infinite;
+    }
+
+    .section {
+      position: relative;
+      padding: clamp(78px, 9vw, 128px) 20px;
+    }
+
+    .container {
+      width: min(100%, var(--max));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--green);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-shadow: var(--shadow-green);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: var(--green);
+      box-shadow: var(--shadow-green);
+    }
+
+    .section-title {
+      margin-bottom: 18px;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.05;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(127, 0, 255, 0.68);
+    }
+
+    .section-lead {
+      max-width: 720px;
+      margin-bottom: 34px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .neon-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+      transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+    }
+
+    .neon-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      padding: 1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(127, 0, 255, 0.85), transparent 35%, rgba(0, 255, 204, 0.72));
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      opacity: 0.38;
+      pointer-events: none;
+      transition: opacity 250ms ease;
+    }
+
+    .neon-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(0, 255, 204, 0.45);
+      box-shadow: var(--shadow-purple), 0 20px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    .neon-card:hover::before {
+      opacity: 1;
+    }
+
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border: 1px solid rgba(0, 255, 204, 0.72);
+      border-radius: 6px;
+      background: rgba(0, 255, 204, 0.08);
+      color: var(--white);
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-green);
+      transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-3px);
+      background: rgba(0, 255, 204, 0.16);
+      box-shadow: 0 0 22px rgba(0, 255, 204, 0.75), 0 0 56px rgba(127, 0, 255, 0.28);
+      outline: none;
+    }
+
+    .btn--purple {
+      border-color: rgba(127, 0, 255, 0.78);
+      background: rgba(127, 0, 255, 0.14);
+      box-shadow: var(--shadow-purple);
+    }
+
+    .btn--pulse {
+      animation: pulseGlow 1.7s ease-in-out infinite;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--nav-height);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+      background: rgba(5, 5, 16, 0.68);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: min(100% - 32px, 1280px);
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.05rem, 2.4vw, 1.55rem);
+      font-weight: 900;
+      color: var(--white);
+      text-shadow: var(--shadow-purple);
+    }
+
+    .logo span {
+      color: var(--purple);
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 2vw, 26px);
+      list-style: none;
+    }
+
+    .nav__links a {
+      position: relative;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      transition: color 180ms ease, text-shadow 180ms ease;
+    }
+
+    .nav__links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -9px;
+      height: 2px;
+      background: var(--green);
+      box-shadow: var(--shadow-green);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 180ms ease;
+    }
+
+    .nav__links a:hover,
+    .nav__links a.active {
+      color: var(--white);
+      text-shadow: var(--shadow-green);
+    }
+
+    .nav__links a.active::after,
+    .nav__links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .hamburger {
+      display: none;
+      width: 46px;
+      height: 42px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--white);
+    }
+
+    .hamburger span {
+      display: block;
+      width: 21px;
+      height: 2px;
+      margin: 5px auto;
+      background: var(--green);
+      box-shadow: var(--shadow-green);
+      transition: transform 200ms ease, opacity 200ms ease;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding-top: var(--nav-height);
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(5, 5, 16, 0.96), rgba(5, 5, 16, 0.72) 54%, rgba(5, 5, 16, 0.9)),
+        url("https://placehold.co/1800x1100/050510/00ffcc?text=DEMO+ARTIST+LIVE") center / cover;
+      opacity: 0.78;
+    }
+
+    .hero__content {
+      width: min(100% - 32px, 1280px);
+      margin: 0 auto;
+      padding: 72px 0;
+    }
+
+    .hero__title {
+      max-width: 1050px;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(3.5rem, 13vw, 10.8rem);
+      line-height: 0.88;
+      text-transform: uppercase;
+      color: var(--white);
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.78), 0 0 32px rgba(127, 0, 255, 0.78), 0 0 70px rgba(0, 255, 204, 0.24);
+      animation: flicker 4.8s linear infinite;
+    }
+
+    .hero__tagline {
+      margin-top: 24px;
+      color: var(--green);
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.05rem, 2.4vw, 1.7rem);
+      text-shadow: var(--shadow-green);
+    }
+
+    .hero__actions,
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero__actions {
+      margin-top: 36px;
+    }
+
+    .social-row {
+      margin-top: 26px;
+    }
+
+    .social-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--white);
+      box-shadow: 0 0 18px rgba(127, 0, 255, 0.16);
+      transition: transform 220ms ease, color 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-4px) scale(1.08);
+      color: var(--green);
+      border-color: var(--green);
+      box-shadow: var(--shadow-green);
+    }
+
+    .ambient-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 10px 13px;
+      border: 1px solid rgba(127, 0, 255, 0.44);
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .ambient-toggle::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--purple);
+      box-shadow: var(--shadow-purple);
+    }
+
+    .ambient-toggle.playing::before {
+      background: var(--green);
+      box-shadow: var(--shadow-green);
+    }
+
+    .music-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(310px, 0.8fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .player {
+      padding: clamp(20px, 4vw, 34px);
+    }
+
+    .now-playing {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .cover {
+      width: 96px;
+      aspect-ratio: 1;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--purple), var(--green));
+      box-shadow: var(--shadow-purple);
+    }
+
+    .track-title {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.15rem, 3vw, 1.8rem);
+      line-height: 1.15;
+    }
+
+    .track-sub {
+      color: var(--muted);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      display: inline-grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(0, 255, 204, 0.5);
+      border-radius: 50%;
+      background: rgba(0, 255, 204, 0.08);
+      color: var(--white);
+      box-shadow: var(--shadow-green);
+    }
+
+    .progress-wrap,
+    .volume-wrap {
+      display: grid;
+      gap: 8px;
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 0.82rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--green);
+    }
+
+    .song-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .song {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.04);
+      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .song:hover,
+    .song.active {
+      border-color: rgba(0, 255, 204, 0.58);
+      background: rgba(0, 255, 204, 0.07);
+      transform: translateX(4px);
+    }
+
+    .spotify-panel {
+      display: grid;
+      align-content: center;
+      justify-items: start;
+      gap: 18px;
+      min-height: 100%;
+      padding: 30px;
+    }
+
+    .spotify-frame {
+      width: 100%;
+      min-height: 152px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(0, 255, 204, 0.46);
+      border-radius: var(--radius);
+      color: var(--muted);
+      text-align: center;
+      padding: 20px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .video-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .video-card {
+      color: var(--white);
+    }
+
+    .video-thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .video-thumb img,
+    .gallery-item img,
+    .blog-card img,
+    .product-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .play-badge {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(5, 5, 16, 0.25);
+      color: var(--green);
+      font-size: 2.2rem;
+      text-shadow: var(--shadow-green);
+      opacity: 0.95;
+    }
+
+    .card-pad {
+      padding: 18px;
+    }
+
+    .card-title {
+      font-family: "Orbitron", sans-serif;
+      font-size: 1rem;
+      line-height: 1.25;
+    }
+
+    .card-meta {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .artist-photo {
+      width: min(100%, 340px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border: 3px solid var(--purple);
+      border-radius: 50%;
+      padding: 8px;
+      box-shadow: var(--shadow-purple), var(--shadow-green);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .artist-photo img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .stat {
+      padding: 18px 12px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--green);
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.35rem, 3vw, 2.1rem);
+      text-shadow: var(--shadow-green);
+    }
+
+    .achievements {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .achievement {
+      padding: 16px;
+    }
+
+    .achievement .trophy {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background: rgba(127, 0, 255, 0.2);
+      box-shadow: var(--shadow-purple);
+    }
+
+    .event-grid,
+    .merch-grid,
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .event-card,
+    .product-card,
+    .blog-card,
+    .beat-row {
+      padding: 20px;
+    }
+
+    .event-date {
+      display: inline-flex;
+      margin-bottom: 16px;
+      padding: 7px 10px;
+      border: 1px solid rgba(0, 255, 204, 0.44);
+      border-radius: 99px;
+      color: var(--green);
+      font-weight: 800;
+      box-shadow: var(--shadow-green);
+    }
+
+    .product-card {
+      display: grid;
+      gap: 14px;
+    }
+
+    .product-card .product-img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .price {
+      color: var(--green);
+      font-family: "Orbitron", sans-serif;
+      font-weight: 800;
+      text-shadow: var(--shadow-green);
+    }
+
+    .beats {
+      display: grid;
+      gap: 14px;
+    }
+
+    .beat-row {
+      display: grid;
+      grid-template-columns: auto 1fr repeat(3, auto) auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .beat-row .genre {
+      color: var(--purple);
+      font-weight: 800;
+      text-shadow: var(--shadow-purple);
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-flow: dense;
+    }
+
+    .gallery-item {
+      position: relative;
+      min-height: 220px;
+      overflow: hidden;
+    }
+
+    .gallery-item.tall {
+      grid-row: span 2;
+      min-height: 462px;
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: end;
+      padding: 18px;
+      background: linear-gradient(transparent, rgba(5, 5, 16, 0.9));
+      color: var(--green);
+      font-family: "Orbitron", sans-serif;
+      opacity: 0;
+      transition: opacity 220ms ease;
+      text-shadow: var(--shadow-green);
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+      place-items: center;
+      padding: 28px;
+      background: rgba(5, 5, 16, 0.88);
+      backdrop-filter: blur(12px);
+    }
+
+    .lightbox.open {
+      display: grid;
+    }
+
+    .lightbox img {
+      max-height: 78vh;
+      border: 1px solid rgba(0, 255, 204, 0.55);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-green);
+    }
+
+    .lightbox button {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+    }
+
+    .blog-card {
+      display: grid;
+      gap: 14px;
+    }
+
+    .blog-thumb {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .forms-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--white);
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    select option {
+      color: #050510;
+    }
+
+    textarea {
+      min-height: 128px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--green);
+      background: rgba(0, 255, 204, 0.07);
+      box-shadow: var(--shadow-green);
+    }
+
+    .newsletter {
+      text-align: center;
+    }
+
+    .newsletter-box {
+      width: min(100%, 760px);
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 46px);
+    }
+
+    .newsletter-form {
+      grid-template-columns: 1fr auto;
+      margin-top: 24px;
+    }
+
+    .site-footer {
+      padding: 44px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 20px;
+      align-items: center;
+      width: min(100%, var(--max));
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .footer-meta {
+      text-align: right;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes gridDrift {
+      to { background-position: 54px 54px; }
+    }
+
+    @keyframes particleFloat {
+      from { transform: translateY(0); opacity: 0.68; }
+      to { transform: translateY(-28px); opacity: 1; }
+    }
+
+    @keyframes flicker {
+      0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+      20%, 24%, 55% { opacity: 0.82; }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 16px rgba(0, 255, 204, 0.48), 0 0 30px rgba(127, 0, 255, 0.16); }
+      50% { box-shadow: 0 0 28px rgba(0, 255, 204, 0.82), 0 0 66px rgba(127, 0, 255, 0.32); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+
+    @keyframes revealGlow {
+      from { letter-spacing: 0.25em; filter: blur(12px); opacity: 0; }
+      to { letter-spacing: 0; filter: blur(0); opacity: 1; }
+    }
+
+    @media (max-width: 1080px) {
+      .nav__links {
+        position: fixed;
+        top: var(--nav-height);
+        left: 16px;
+        right: 16px;
+        display: grid;
+        gap: 0;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--radius);
+        background: rgba(5, 5, 16, 0.94);
+        backdrop-filter: blur(16px);
+        transform: translateY(-18px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 220ms ease, transform 220ms ease, visibility 220ms ease;
+      }
+
+      .nav__links.open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav__links a {
+        display: block;
+        padding: 13px 10px;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .music-layout,
+      .about-layout,
+      .forms-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .video-grid,
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        cursor: auto;
+      }
+
+      button,
+      a {
+        cursor: pointer;
+      }
+
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+
+      .section {
+        padding-inline: 16px;
+      }
+
+      .hero__title {
+        font-size: clamp(3rem, 17vw, 5.4rem);
+      }
+
+      .controls,
+      .song,
+      .beat-row,
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .now-playing {
+        align-items: flex-start;
+      }
+
+      .cover {
+        width: 74px;
+      }
+
+      .video-grid,
+      .event-grid,
+      .merch-grid,
+      .blog-grid,
+      .stats,
+      .achievements,
+      .form-grid,
+      .gallery-grid,
+      .newsletter-form {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-item.tall {
+        min-height: 260px;
+      }
+
+      .footer-meta {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader" aria-hidden="true">
+    <div class="loader__name">PORTFOLIO</div>
+  </div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="logo" href="#home"><span>DEMO</span>ARTIST</a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#music">Music</a></li>
+        <li><a href="#videos">Videos</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#merch">Merch</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <div class="hero__content reveal">
+        <h1 class="hero__title">DEMO ARTIST</h1>
+        <p class="hero__tagline">Rapper | Artist | Creator</p>
+        <div class="hero__actions">
+          <a class="btn" href="https://spotify.link/U7ZAdHY7vXb" target="_blank" rel="noopener">Listen Now</a>
+          <a class="btn btn--purple" href="#" target="_blank" rel="noopener">Watch Now</a>
+        </div>
+        <div class="social-row" aria-label="Social links">
+          <a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+          </a>
+          <a class="social-icon" href="https://spotify.link/U7ZAdHY7vXb" target="_blank" rel="noopener" aria-label="Spotify">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M7.8 10.1c3.2-1 6.4-.8 8.8.6M8.4 13c2.4-.7 5-.5 7 .5M9 15.6c1.8-.5 3.7-.4 5.2.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+          <a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 12s0-3.2-.4-4.5c-.2-.8-.8-1.4-1.6-1.6C18.6 5.5 12 5.5 12 5.5s-6.6 0-8 .4c-.8.2-1.4.8-1.6 1.6C2 8.8 2 12 2 12s0 3.2.4 4.5c.2.8.8 1.4 1.6 1.6 1.4.4 8 .4 8 .4s6.6 0 8-.4c.8-.2 1.4-.8 1.6-1.6.4-1.3.4-4.5.4-4.5Z" stroke="currentColor" stroke-width="2"/><path d="m10 9 5 3-5 3V9Z" fill="currentColor"/></svg>
+          </a>
+        </div>
+        <button class="ambient-toggle" id="ambientToggle" type="button">Ambient beat loop off</button>
+      </div>
+    </section>
+
+    <section class="section" id="music">
+      <div class="container">
+        <span class="eyebrow reveal">Music Player</span>
+        <h2 class="section-title reveal">Tracks From The Neon Side</h2>
+        <p class="section-lead reveal">Original placeholder tracks for the demo portfolio. Tap a track, scrub the progress, and control the volume.</p>
+        <div class="music-layout">
+          <article class="player neon-card reveal">
+            <div class="now-playing">
+              <div class="cover" aria-hidden="true"></div>
+              <div>
+                <h3 class="track-title" id="trackTitle">Night Vision Flow</h3>
+                <p class="track-sub" id="trackMeta">Demo Artist | 2:42</p>
+              </div>
+            </div>
+            <div class="controls">
+              <button class="icon-btn" id="playPause" type="button" aria-label="Play or pause">▶</button>
+              <div class="progress-wrap">
+                <input id="progress" type="range" min="0" max="100" value="0" aria-label="Track progress">
+                <div class="time-row"><span id="currentTime">0:00</span><span id="duration">2:42</span></div>
+              </div>
+              <div class="volume-wrap">
+                <label for="volume">Volume</label>
+                <input id="volume" type="range" min="0" max="1" step="0.01" value="0.65">
+              </div>
+            </div>
+            <div class="song-list" id="songList"></div>
+          </article>
+          <aside class="spotify-panel neon-card reveal">
+            <h3 class="card-title">Spotify Embed</h3>
+            <div class="spotify-frame">Spotify preview placeholder<br>Connects to demo stream link.</div>
+            <a class="btn" href="https://spotify.link/U7ZAdHY7vXb" target="_blank" rel="noopener">Stream on Spotify</a>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="videos">
+      <div class="container">
+        <span class="eyebrow reveal">Videos</span>
+        <h2 class="section-title reveal">Visual Drops</h2>
+        <div class="grid video-grid">
+          <a class="video-card neon-card reveal" href="#" target="_blank" rel="noopener">
+            <div class="video-thumb"><img loading="lazy" src="https://placehold.co/640x360/10051c/00ffcc?text=Studio+Freestyle" alt="Studio freestyle video thumbnail"><span class="play-badge">▶</span></div><div class="card-pad"><h3 class="card-title">Studio Freestyle</h3><p class="card-meta">Raw booth energy and late-night bars.</p></div>
+          </a>
+          <a class="video-card neon-card reveal" href="#" target="_blank" rel="noopener">
+            <div class="video-thumb"><img loading="lazy" src="https://placehold.co/640x360/050510/7f00ff?text=Neon+Cypher" alt="Neon cypher video thumbnail"><span class="play-badge">▶</span></div><div class="card-pad"><h3 class="card-title">Neon Cypher</h3><p class="card-meta">Sharp cuts, heavy bass, city pulse.</p></div>
+          </a>
+          <a class="video-card neon-card reveal" href="#" target="_blank" rel="noopener">
+            <div class="video-thumb"><img loading="lazy" src="https://placehold.co/640x360/0b0b1e/ffffff?text=Street+Session" alt="Street session video thumbnail"><span class="play-badge">▶</span></div><div class="card-pad"><h3 class="card-title">Street Session</h3><p class="card-meta">Independent grind in motion.</p></div>
+          </a>
+          <a class="video-card neon-card reveal" href="#" target="_blank" rel="noopener">
+            <div class="video-thumb"><img loading="lazy" src="https://placehold.co/640x360/070713/00ffcc?text=Live+Mic" alt="Live mic video thumbnail"><span class="play-badge">▶</span></div><div class="card-pad"><h3 class="card-title">Live Mic</h3><p class="card-meta">Crowd smoke, lights, and impact.</p></div>
+          </a>
+        </div>
+        <p style="margin-top:24px"><a class="btn btn--purple reveal" href="#" target="_blank" rel="noopener">Watch More</a></p>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container about-layout">
+        <div class="artist-photo reveal"><img loading="lazy" src="https://placehold.co/700x700/050510/00ffcc?text=Demo+Artist" alt="Demo Artist photo placeholder"></div>
+        <div>
+          <span class="eyebrow reveal">About Demo Artist</span>
+          <h2 class="section-title reveal">Independent Voice, Heavy Frequency</h2>
+          <p class="section-lead reveal">Demo Artist is an independent artist, known for creative work and engaging content. The portfolio showcases music, videos, events, and more.</p>
+          <div class="stats">
+            <div class="stat neon-card reveal"><strong>45+</strong><span>Songs Released</span></div>
+            <div class="stat neon-card reveal"><strong>12K</strong><span>YouTube Subscribers</span></div>
+            <div class="stat neon-card reveal"><strong>1.8M</strong><span>Spotify Streams</span></div>
+            <div class="stat neon-card reveal"><strong>35+</strong><span>Shows Done</span></div>
+          </div>
+          <div class="achievements">
+            <div class="achievement neon-card reveal"><span class="trophy">🏆</span><h3 class="card-title">Indie Heat</h3><p class="card-meta">Featured on underground playlists.</p></div>
+            <div class="achievement neon-card reveal"><span class="trophy">🏆</span><h3 class="card-title">Stage Proof</h3><p class="card-meta">Live club and college sets.</p></div>
+            <div class="achievement neon-card reveal"><span class="trophy">🏆</span><h3 class="card-title">Studio Run</h3><p class="card-meta">Consistent monthly drops.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="events">
+      <div class="container">
+        <span class="eyebrow reveal">Events</span>
+        <h2 class="section-title reveal">Upcoming Shows</h2>
+        <div class="grid event-grid">
+          <article class="event-card neon-card reveal"><span class="event-date">24 Aug 2026</span><h3 class="card-title">Neon Nights Live</h3><p class="card-meta">Echo Arena | Delhi</p><a class="btn" href="#booking">Get Tickets</a></article>
+          <article class="event-card neon-card reveal"><span class="event-date">18 Sep 2026</span><h3 class="card-title">Basement Bars</h3><p class="card-meta">Underground Social | Mumbai</p><a class="btn" href="#booking">Get Tickets</a></article>
+          <article class="event-card neon-card reveal"><span class="event-date">09 Oct 2026</span><h3 class="card-title">Chill Frequency Fest</h3><p class="card-meta">Skyline Grounds | Bengaluru</p><a class="btn" href="#booking">Get Tickets</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="merch">
+      <div class="container">
+        <span class="eyebrow reveal">Merch Store</span>
+        <h2 class="section-title reveal">Wear The Signal</h2>
+        <div class="grid merch-grid">
+          <article class="product-card neon-card reveal"><div class="product-img"><img loading="lazy" src="https://placehold.co/600x600/050510/00ffcc?text=Demo+T-Shirt" alt="Demo T-shirt"></div><h3 class="card-title">Neon Logo T-Shirt</h3><p class="price">₹899</p><button class="btn" type="button">Buy Now</button></article>
+          <article class="product-card neon-card reveal"><div class="product-img"><img loading="lazy" src="https://placehold.co/600x600/13051f/7f00ff?text=Demo+Hoodie" alt="Demo hoodie"></div><h3 class="card-title">Cyber Chill Hoodie</h3><p class="price">₹1,999</p><button class="btn" type="button">Buy Now</button></article>
+          <article class="product-card neon-card reveal"><div class="product-img"><img loading="lazy" src="https://placehold.co/600x600/061414/ffffff?text=Demo+Cap" alt="Demo cap"></div><h3 class="card-title">Purple Glow Cap</h3><p class="price">₹699</p><button class="btn" type="button">Buy Now</button></article>
+          <article class="product-card neon-card reveal"><div class="product-img"><img loading="lazy" src="https://placehold.co/600x600/050510/00ffcc?text=Demo+Tee" alt="Demo tour tee"></div><h3 class="card-title">Tour Code Tee</h3><p class="price">₹999</p><button class="btn" type="button">Buy Now</button></article>
+          <article class="product-card neon-card reveal"><div class="product-img"><img loading="lazy" src="https://placehold.co/600x600/12051f/00ffcc?text=Demo+Poster" alt="Demo poster"></div><h3 class="card-title">Studio Wall Poster</h3><p class="price">₹399</p><button class="btn" type="button">Buy Now</button></article>
+          <article class="product-card neon-card reveal"><div class="product-img"><img loading="lazy" src="https://placehold.co/600x600/050510/7f00ff?text=Demo+Stickers" alt="Demo sticker pack"></div><h3 class="card-title">Neon Sticker Pack</h3><p class="price">₹249</p><button class="btn" type="button">Buy Now</button></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="beats">
+      <div class="container">
+        <span class="eyebrow reveal">Beat Store</span>
+        <h2 class="section-title reveal">License The Knock</h2>
+        <div class="beats">
+          <article class="beat-row neon-card reveal"><button class="icon-btn beat-preview" type="button" aria-label="Preview Midnight Drive">▶</button><h3 class="card-title">Midnight Drive</h3><span>142 BPM</span><span class="genre">Trap</span><span class="price">₹2,999</span><button class="btn" type="button">License This Beat</button></article>
+          <article class="beat-row neon-card reveal"><button class="icon-btn beat-preview" type="button" aria-label="Preview Delhi Static">▶</button><h3 class="card-title">Delhi Static</h3><span>96 BPM</span><span class="genre">Boom Bap</span><span class="price">₹2,499</span><button class="btn" type="button">License This Beat</button></article>
+          <article class="beat-row neon-card reveal"><button class="icon-btn beat-preview" type="button" aria-label="Preview Chrome Alley">▶</button><h3 class="card-title">Chrome Alley</h3><span>128 BPM</span><span class="genre">Drill</span><span class="price">₹3,499</span><button class="btn" type="button">License This Beat</button></article>
+          <article class="beat-row neon-card reveal"><button class="icon-btn beat-preview" type="button" aria-label="Preview Purple Smoke">▶</button><h3 class="card-title">Purple Smoke</h3><span>150 BPM</span><span class="genre">Melodic Trap</span><span class="price">₹3,999</span><button class="btn" type="button">License This Beat</button></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gallery">
+      <div class="container">
+        <span class="eyebrow reveal">Behind The Scenes</span>
+        <h2 class="section-title reveal">Studio Smoke & City Light</h2>
+        <div class="grid gallery-grid">
+          <button class="gallery-item neon-card tall reveal" type="button" data-title="Late Booth Takes"><img loading="lazy" src="https://placehold.co/700x980/050510/00ffcc?text=Booth" alt="Late Booth Takes"><span class="gallery-overlay">Late Booth Takes</span></button>
+          <button class="gallery-item neon-card reveal" type="button" data-title="Mix Desk"><img loading="lazy" src="https://placehold.co/700x500/11051d/7f00ff?text=Mix+Desk" alt="Mix Desk"><span class="gallery-overlay">Mix Desk</span></button>
+          <button class="gallery-item neon-card reveal" type="button" data-title="City Run"><img loading="lazy" src="https://placehold.co/700x500/061414/ffffff?text=City+Run" alt="City Run"><span class="gallery-overlay">City Run</span></button>
+          <button class="gallery-item neon-card tall reveal" type="button" data-title="Stage Prep"><img loading="lazy" src="https://placehold.co/700x980/050510/7f00ff?text=Stage+Prep" alt="Stage Prep"><span class="gallery-overlay">Stage Prep</span></button>
+          <button class="gallery-item neon-card reveal" type="button" data-title="Writing Session"><img loading="lazy" src="https://placehold.co/700x500/050510/00ffcc?text=Writing" alt="Writing Session"><span class="gallery-overlay">Writing Session</span></button>
+          <button class="gallery-item neon-card reveal" type="button" data-title="Green Room"><img loading="lazy" src="https://placehold.co/700x500/10051c/00ffcc?text=Green+Room" alt="Green Room"><span class="gallery-overlay">Green Room</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="blog">
+      <div class="container">
+        <span class="eyebrow reveal">Blog / Diary</span>
+        <h2 class="section-title reveal">Notes From The Grind</h2>
+        <div class="grid blog-grid">
+          <article class="blog-card neon-card reveal"><div class="blog-thumb"><img loading="lazy" src="https://placehold.co/700x440/050510/00ffcc?text=Studio+Life" alt="Studio life thumbnail"></div><h3 class="card-title">Studio Life After Midnight</h3><p class="card-meta">11 May 2026</p><p>The best hooks arrive when the city is quiet and the bass is the only clock in the room.</p><a class="btn" href="#contact">Read More</a></article>
+          <article class="blog-card neon-card reveal"><div class="blog-thumb"><img loading="lazy" src="https://placehold.co/700x440/10051c/7f00ff?text=Journey" alt="Music journey thumbnail"></div><h3 class="card-title">Building A Sound From Scratch</h3><p class="card-meta">20 Apr 2026</p><p>Independent music means learning the booth, the mix, the camera, and the business one drop at a time.</p><a class="btn" href="#contact">Read More</a></article>
+          <article class="blog-card neon-card reveal"><div class="blog-thumb"><img loading="lazy" src="https://placehold.co/700x440/061414/ffffff?text=Struggles" alt="Struggles thumbnail"></div><h3 class="card-title">Turning Struggle Into Rhythm</h3><p class="card-meta">02 Apr 2026</p><p>Every hard season has a tempo. The job is to catch it before it disappears.</p><a class="btn" href="#contact">Read More</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="booking">
+      <div class="container">
+        <span class="eyebrow reveal">Booking / Collab</span>
+        <h2 class="section-title reveal">Book Demo Artist</h2>
+        <div class="forms-layout">
+          <form class="neon-card event-card reveal" id="bookingForm">
+            <div class="form-grid">
+              <div class="field"><label for="bookName">Name</label><input id="bookName" name="name" required></div>
+              <div class="field"><label for="bookEmail">Email</label><input id="bookEmail" type="email" name="email" required></div>
+              <div class="field"><label for="bookPhone">Phone</label><input id="bookPhone" type="tel" name="phone"></div>
+              <div class="field"><label for="eventType">Event Type</label><select id="eventType" name="eventType"><option>Live Show</option><option>College Fest</option><option>Club Night</option><option>Collaboration</option><option>Private Event</option></select></div>
+              <div class="field"><label for="eventDate">Event Date</label><input id="eventDate" type="date" name="eventDate"></div>
+              <div class="field"><label for="budget">Budget</label><input id="budget" name="budget" placeholder="₹"></div>
+            </div>
+            <div class="field"><label for="bookMessage">Message</label><textarea id="bookMessage" name="message" required></textarea></div>
+            <button class="btn btn--pulse" type="submit">Submit Booking</button>
+          </form>
+          <aside class="neon-card event-card reveal">
+            <h3 class="card-title">Collab Signals</h3>
+            <p class="card-meta">For hooks, verses, beat licensing, live performance, brand drops, and content collaborations, send the brief and preferred date. Serious inquiries get priority.</p>
+            <div class="social-row">
+              <a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+              <a class="social-icon" href="https://spotify.link/U7ZAdHY7vXb" target="_blank" rel="noopener" aria-label="Spotify">SP</a>
+              <a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="YouTube">YT</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <span class="eyebrow reveal">Contact</span>
+        <h2 class="section-title reveal">Send The Signal</h2>
+        <div class="forms-layout">
+          <form class="neon-card event-card reveal" id="contactForm">
+            <div class="field"><label for="contactName">Name</label><input id="contactName" name="name" required></div>
+            <div class="field"><label for="contactEmail">Email</label><input id="contactEmail" type="email" name="email" required></div>
+            <div class="field"><label for="contactMessage">Message</label><textarea id="contactMessage" name="message" required></textarea></div>
+            <button class="btn" type="submit">Send Message</button>
+          </form>
+          <aside class="neon-card event-card reveal">
+            <h3 class="card-title">Social Links</h3>
+            <p class="card-meta">Follow the releases, reels, and live drops.</p>
+            <div class="social-row">
+              <a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+              <a class="social-icon" href="https://spotify.link/U7ZAdHY7vXb" target="_blank" rel="noopener" aria-label="Spotify">SP</a>
+              <a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="YouTube">YT</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section newsletter" id="newsletter">
+      <div class="container">
+        <div class="newsletter-box neon-card reveal">
+          <span class="eyebrow">Newsletter</span>
+          <h2 class="section-title">Join The Crew</h2>
+          <p class="section-lead" style="margin-inline:auto">Get exclusive tracks & updates before the wider feed catches them.</p>
+          <form class="newsletter-form" id="newsletterForm">
+            <input type="email" aria-label="Email address" placeholder="you@example.com" required>
+            <button class="btn btn--purple" type="submit">Join the Crew</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="logo" href="#home"><span>BLACKY</span>CHILL</a>
+      <div class="footer-links">
+        <a href="#music">Music</a><a href="#videos">Videos</a><a href="#events">Events</a><a href="#merch">Merch</a><a href="#contact">Contact</a>
+      </div>
+      <div class="footer-meta">
+        <p>© 2024 Demo Artist. All Rights Reserved.</p>
+        <p>Made with fire 🔥</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="btn" id="closeLightbox" type="button">Close</button>
+    <img src="" alt="" id="lightboxImage">
+  </div>
+
+  <script>
+    const $ = (selector, scope = document) => scope.querySelector(selector);
+    const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+
+    window.addEventListener("load", () => {
+      setTimeout(() => $(".loader").classList.add("loaded"), 650);
+    });
+
+    const cursorDot = $(".cursor-dot");
+    const cursorRing = $(".cursor-ring");
+    let cursorX = 0;
+    let cursorY = 0;
+    let ringX = 0;
+    let ringY = 0;
+
+    window.addEventListener("pointermove", (event) => {
+      cursorX = event.clientX;
+      cursorY = event.clientY;
+      cursorDot.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+    });
+
+    const animateCursor = () => {
+      ringX += (cursorX - ringX) * 0.18;
+      ringY += (cursorY - ringY) * 0.18;
+      cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animateCursor);
+    };
+    animateCursor();
+
+    $$("a, button, input, textarea, select").forEach((el) => {
+      el.addEventListener("mouseenter", () => cursorRing.classList.add("is-hovering"));
+      el.addEventListener("mouseleave", () => cursorRing.classList.remove("is-hovering"));
+    });
+
+    const hamburger = $("#hamburger");
+    const navLinks = $("#navLinks");
+    hamburger.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      hamburger.classList.toggle("open", isOpen);
+      hamburger.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    $$(".nav__links a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        hamburger.classList.remove("open");
+        hamburger.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    $$(".reveal").forEach((el) => revealObserver.observe(el));
+
+    const sections = $$("main section[id]");
+    const navAnchors = $$(".nav__links a");
+    const activeObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navAnchors.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+        });
+      });
+    }, { rootMargin: "-42% 0px -52% 0px", threshold: 0 });
+    sections.forEach((section) => activeObserver.observe(section));
+
+    const tracks = [
+      { title: "Night Vision Flow", mood: "Demo Artist | 2:42", duration: 162, freq: 110 },
+      { title: "Purple Smoke", mood: "Demo Artist | 3:08", duration: 188, freq: 123 },
+      { title: "Street Code", mood: "Demo Artist | 2:55", duration: 175, freq: 98 },
+      { title: "No Sleep Delhi", mood: "Demo Artist | 3:21", duration: 201, freq: 132 },
+      { title: "Green Light Verse", mood: "Demo Artist | 2:37", duration: 157, freq: 146 }
+    ];
+
+    let currentTrack = 0;
+    let playerCtx;
+    let playerInterval;
+    let playerStart = 0;
+    let elapsedBeforePause = 0;
+    let isPlaying = false;
+    let gainNode;
+    let oscNode;
+
+    const songList = $("#songList");
+    const playPause = $("#playPause");
+    const progress = $("#progress");
+    const volume = $("#volume");
+    const trackTitle = $("#trackTitle");
+    const trackMeta = $("#trackMeta");
+    const currentTimeEl = $("#currentTime");
+    const durationEl = $("#duration");
+
+    const formatTime = (seconds) => {
+      const min = Math.floor(seconds / 60);
+      const sec = Math.floor(seconds % 60).toString().padStart(2, "0");
+      return `${min}:${sec}`;
+    };
+
+    const renderSongs = () => {
+      songList.innerHTML = tracks.map((track, index) => `
+        <button class="song ${index === currentTrack ? "active" : ""}" type="button" data-index="${index}">
+          <span>${index + 1}</span>
+          <span><strong>${track.title}</strong><br><small>${track.mood}</small></span>
+          <span>${formatTime(track.duration)}</span>
+        </button>
+      `).join("");
+    };
+
+    const setTrack = (index) => {
+      stopTrack();
+      currentTrack = index;
+      const track = tracks[currentTrack];
+      trackTitle.textContent = track.title;
+      trackMeta.textContent = track.mood;
+      durationEl.textContent = formatTime(track.duration);
+      currentTimeEl.textContent = "0:00";
+      progress.value = 0;
+      elapsedBeforePause = 0;
+      renderSongs();
+    };
+
+    const createPlayerTone = () => {
+      playerCtx = playerCtx || new (window.AudioContext || window.webkitAudioContext)();
+      gainNode = playerCtx.createGain();
+      gainNode.gain.value = Number(volume.value) * 0.08;
+      oscNode = playerCtx.createOscillator();
+      const filter = playerCtx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.value = 620;
+      oscNode.type = "sawtooth";
+      oscNode.frequency.value = tracks[currentTrack].freq;
+      oscNode.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(playerCtx.destination);
+      oscNode.start();
+    };
+
+    const startTrack = async () => {
+      if (isPlaying) return;
+      createPlayerTone();
+      if (playerCtx.state === "suspended") await playerCtx.resume();
+      isPlaying = true;
+      playPause.textContent = "Ⅱ";
+      playerStart = performance.now() / 1000 - elapsedBeforePause;
+      playerInterval = setInterval(() => {
+        const elapsed = performance.now() / 1000 - playerStart;
+        const duration = tracks[currentTrack].duration;
+        const clamped = Math.min(elapsed, duration);
+        progress.value = (clamped / duration) * 100;
+        currentTimeEl.textContent = formatTime(clamped);
+        if (elapsed >= duration) setTrack((currentTrack + 1) % tracks.length);
+      }, 250);
+    };
+
+    const stopTrack = () => {
+      clearInterval(playerInterval);
+      if (oscNode) {
+        try { oscNode.stop(); } catch (error) {}
+        oscNode.disconnect();
+        oscNode = null;
+      }
+      isPlaying = false;
+      playPause.textContent = "▶";
+    };
+
+    playPause.addEventListener("click", () => {
+      if (isPlaying) {
+        elapsedBeforePause = performance.now() / 1000 - playerStart;
+        stopTrack();
+      } else {
+        startTrack();
+      }
+    });
+
+    progress.addEventListener("input", () => {
+      const duration = tracks[currentTrack].duration;
+      elapsedBeforePause = (Number(progress.value) / 100) * duration;
+      currentTimeEl.textContent = formatTime(elapsedBeforePause);
+      if (isPlaying) playerStart = performance.now() / 1000 - elapsedBeforePause;
+    });
+
+    volume.addEventListener("input", () => {
+      if (gainNode) gainNode.gain.value = Number(volume.value) * 0.08;
+    });
+
+    songList.addEventListener("click", (event) => {
+      const song = event.target.closest(".song");
+      if (!song) return;
+      setTrack(Number(song.dataset.index));
+      startTrack();
+    });
+
+    renderSongs();
+
+    let ambientCtx;
+    let ambientTimer;
+    const ambientToggle = $("#ambientToggle");
+    const playKick = (ctx, time) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.setValueAtTime(90, time);
+      osc.frequency.exponentialRampToValueAtTime(42, time + 0.14);
+      gain.gain.setValueAtTime(0.16, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(time);
+      osc.stop(time + 0.2);
+    };
+    const playHat = (ctx, time) => {
+      const bufferSize = ctx.sampleRate * 0.04;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      const noise = ctx.createBufferSource();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+      filter.type = "highpass";
+      filter.frequency.value = 5000;
+      gain.gain.setValueAtTime(0.035, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+      noise.buffer = buffer;
+      noise.connect(filter).connect(gain).connect(ctx.destination);
+      noise.start(time);
+    };
+
+    ambientToggle.addEventListener("click", async () => {
+      ambientCtx = ambientCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (ambientCtx.state === "suspended") await ambientCtx.resume();
+      if (ambientTimer) {
+        clearInterval(ambientTimer);
+        ambientTimer = null;
+        ambientToggle.classList.remove("playing");
+        ambientToggle.textContent = "Ambient beat loop off";
+        return;
+      }
+      let step = 0;
+      ambientTimer = setInterval(() => {
+        const t = ambientCtx.currentTime + 0.02;
+        if (step % 4 === 0 || step % 8 === 6) playKick(ambientCtx, t);
+        if (step % 2 === 1) playHat(ambientCtx, t);
+        step = (step + 1) % 16;
+      }, 170);
+      ambientToggle.classList.add("playing");
+      ambientToggle.textContent = "Ambient beat loop on";
+    });
+
+    $$(".beat-preview").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === "suspended") await ctx.resume();
+        for (let i = 0; i < 8; i++) playKick(ctx, ctx.currentTime + i * 0.22);
+        setTimeout(() => ctx.close(), 2200);
+      });
+    });
+
+    const lightbox = $("#lightbox");
+    const lightboxImage = $("#lightboxImage");
+    $$(".gallery-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const img = $("img", item);
+        lightboxImage.src = img.src;
+        lightboxImage.alt = item.dataset.title || img.alt;
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    $("#closeLightbox").addEventListener("click", () => {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+    });
+
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) $("#closeLightbox").click();
+    });
+
+    $$("form").forEach((form) => {
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const button = $("button[type='submit']", form);
+        const original = button.textContent;
+        button.textContent = "Signal Sent";
+        form.reset();
+        setTimeout(() => button.textContent = original, 1800);
+      });
+    });
+  </script>
+</body>
+</html>
